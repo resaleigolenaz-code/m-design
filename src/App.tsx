@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import * as fabric from 'fabric';
 import { 
   MousePointer2, Gem, PenTool, Eraser, Move, RotateCw, 
   FlipHorizontal, Copy, Trash2, Undo, Redo, 
   Mic, PenLine, Image as ImageIcon, Send, Sparkles,
-  Eye, Lock, Trash, HelpCircle, Bell
+  Eye, Lock, HelpCircle, Bell
 } from 'lucide-react';
 
 function App() {
@@ -15,7 +15,7 @@ function App() {
   const [activeColor, setActiveColor] = useState('diamond');
   const [activeShape, setActiveShape] = useState('round');
   const [isDrawing, setIsDrawing] = useState(false);
-  const [goldColor, setGoldColor] = useState('#C9A25E'); // Default Rose Gold
+  const [goldColor] = useState('#C9A25E'); // Default Rose Gold
 
   useEffect(() => {
     if (canvasRef.current && !canvas) {
@@ -88,9 +88,9 @@ function App() {
             top: activeObject.top! + 20,
             evented: true,
           });
-          if (cloned.type === 'activeSelection') {
+          if (cloned instanceof fabric.ActiveSelection) {
             cloned.canvas = canvas;
-            cloned.forEachObject((obj) => canvas.add(obj));
+            cloned.forEachObject((obj: fabric.FabricObject) => canvas.add(obj));
             cloned.setCoords();
           } else {
             canvas.add(cloned);
